@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Health Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 1000px; margin: auto; }
+        h1 { text-align: center; color: #2c3e50; }
+        .kpi-board { display: flex; gap: 20px; justify-content: space-between; margin-bottom: 30px; flex-wrap: wrap; }
+        .kpi-card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); flex: 1; min-width: 200px; text-align: center; }
+        .kpi-card h3 { margin: 0 0 10px; font-size: 1.1em; color: #7f8c8d; }
+        .kpi-card p { margin: 0; font-size: 1.8em; font-weight: bold; color: #27ae60; }
+        .content-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .card h2 { margin-top: 0; font-size: 1.3em; color: #2c3e50; border-bottom: 2px solid #ecf0f1; padding-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #f8f9fa; }
+        @media (max-width: 768px) { .content-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dashboard สุขภาพ (7 - 13 ก.ย.)</h1>
+        
+        <div class="kpi-board">
+            <div class="kpi-card"><h3>วันออกกำลังกาย</h3><p>7 วัน</p></div>
+            <div class="kpi-card"><h3>เวลารวม</h3><p>255 นาที</p></div>
+            <div class="kpi-card"><h3>ชั่วโมงนอนเฉลี่ย</h3><p>6.9 ชม.</p></div>
+            <div class="kpi-card"><h3>ปริมาณน้ำเฉลี่ย</h3><p>1.67 ลิตร</p></div>
+        </div>
+
+        <div class="content-grid">
+            <div class="card">
+                <h2>กิจกรรมแต่ละวัน</h2>
+                <table>
+                    <thead>
+                        <tr><th>วันที่</th><th>กิจกรรม</th><th>เวลา (นาที)</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>7 ก.ย.</td><td>วิ่ง</td><td>30</td></tr>
+                        <tr><td>8 ก.ย.</td><td>ปั่นจักรยาน</td><td>45</td></tr>
+                        <tr><td>9 ก.ย.</td><td>วิ่ง</td><td>30</td></tr>
+                        <tr><td>10 ก.ย.</td><td>ปั่นจักรยาน</td><td>45</td></tr>
+                        <tr><td>11 ก.ย.</td><td>วิ่ง</td><td>30</td></tr>
+                        <tr><td>12 ก.ย.</td><td>ปั่นจักรยาน</td><td>45</td></tr>
+                        <tr><td>13 ก.ย.</td><td>วิ่ง</td><td>30</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="card">
+                <h2>แนวโน้มการนอนและดื่มน้ำ</h2>
+                <canvas id="healthChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('healthChart').getContext('2d');
+        const healthChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['7 ก.ย.', '8 ก.ย.', '9 ก.ย.', '10 ก.ย.', '11 ก.ย.', '12 ก.ย.', '13 ก.ย.'],
+                datasets: [
+                    {
+                        label: 'การนอน (ชม.)',
+                        data: [7.2, 6.5, 7.2, 6.5, 7.2, 6.5, 7.2],
+                        borderColor: '#8e44ad',
+                        backgroundColor: 'rgba(142, 68, 173, 0.2)',
+                        yAxisID: 'y',
+                        tension: 0.3,
+                        fill: true
+                    },
+                    {
+                        label: 'น้ำ (ลิตร)',
+                        data: [1.8, 1.5, 1.8, 1.5, 1.8, 1.5, 1.8],
+                        borderColor: '#3498db',
+                        backgroundColor: 'rgba(52, 152, 219, 0.2)',
+                        yAxisID: 'y1',
+                        tension: 0.3,
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                interaction: { mode: 'index', intersect: false },
+                scales: {
+                    y: { type: 'linear', display: true, position: 'left', title: { display: true, text: 'ชั่วโมงนอน' }, suggestedMin: 0, suggestedMax: 10 },
+                    y1: { type: 'linear', display: true, position: 'right', grid: { drawOnChartArea: false }, title: { display: true, text: 'ปริมาณน้ำ (ลิตร)' }, suggestedMin: 0, suggestedMax: 3 }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
